@@ -1,5 +1,5 @@
 ------------------------------------------------------------
--- CREACI覰 DE LA BASE DE DATOS Y USO DE LA MISMA
+-- CREACI脫N DE LA BASE DE DATOS Y USO DE LA MISMA
 ------------------------------------------------------------
 CREATE DATABASE BaseAstronomia;
 GO
@@ -7,21 +7,21 @@ USE BaseAstronomia;
 GO
 
 ------------------------------------------------------------
--- CREACI覰 DE TABLAS
+-- CREACI脫N DE TABLAS
 ------------------------------------------------------------
 
--- Tabla de dimensi髇: CuerposCelestes
--- Objetivo: Almacenar informaci髇 sobre los cuerpos celestes (nombre, tipo y distancia en a駉s luz)
+-- Tabla de dimensi贸n: CuerposCelestes
+-- Objetivo: Almacenar informaci贸n sobre los cuerpos celestes (nombre, tipo y distancia en a帽os luz)
 CREATE TABLE CuerposCelestes (
     ID_Cuerpo INT IDENTITY(1,1) PRIMARY KEY,
     Nombre NVARCHAR(100),
     Tipo NVARCHAR(50),
-    Distancia FLOAT  -- Distancia en a駉s luz
+    Distancia FLOAT  -- Distancia en a帽os luz
 );
 GO
 
--- Tabla de dimensi髇: Observatorios
--- Objetivo: Almacenar informaci髇 sobre los observatorios (nombre, ubicaci髇 y pa韘)
+-- Tabla de dimensi贸n: Observatorios
+-- Objetivo: Almacenar informaci贸n sobre los observatorios (nombre, ubicaci贸n y pa铆s)
 CREATE TABLE Observatorios (
     ID_Observatorio INT IDENTITY(1,1) PRIMARY KEY,
     NombreObservatorio NVARCHAR(100),
@@ -44,7 +44,7 @@ CREATE TABLE Observaciones (
 GO
 
 ------------------------------------------------------------
--- INSERCI覰 DE REGISTROS (10 EN CADA TABLA)
+-- INSERCI脫N DE REGISTROS (10 EN CADA TABLA)
 ------------------------------------------------------------
 
 -- Insertar registros en CuerposCelestes
@@ -54,9 +54,9 @@ VALUES
 ('Alpha Centauri', 'Sistema Estelar', 4.37),
 ('Sirius', 'Estrella', 8.6),
 ('Betelgeuse', 'Estrella', 642.5),
-('Andr髆eda', 'Galaxia', 2537000),
-('V韆 L醕tea', 'Galaxia', 0),
-('J鷓iter', 'Planeta', 0.000082),
+('Andr贸meda', 'Galaxia', 2537000),
+('V铆a L谩ctea', 'Galaxia', 0),
+('J煤piter', 'Planeta', 0.000082),
 ('Saturno', 'Planeta', 0.00015),
 ('Orion', 'Nebulosa', 1344),
 ('Vega', 'Estrella', 25);
@@ -65,14 +65,14 @@ GO
 -- Insertar registros en Observatorios
 INSERT INTO Observatorios (NombreObservatorio, Ubicacion, Pais)
 VALUES
-('Hubble', '觬bita Terrestre', 'EE.UU.'),
+('Hubble', '脫rbita Terrestre', 'EE.UU.'),
 ('Arecibo', 'Arecibo, Puerto Rico', 'EE.UU.'),
 ('Very Large Telescope', 'Desierto de Atacama', 'Chile'),
 ('Keck', 'Mauna Kea', 'EE.UU.'),
 ('Palomar', 'California', 'EE.UU.'),
 ('La Silla', 'Desierto de Atacama', 'Chile'),
-('Gemini', 'Haw醝', 'EE.UU.'),
-('Subaru', 'Haw醝', 'EE.UU.'),
+('Gemini', 'Haw谩i', 'EE.UU.'),
+('Subaru', 'Haw谩i', 'EE.UU.'),
 ('Siding Spring', 'Nueva Gales del Sur', 'Australia'),
 ('ESO', 'Garching', 'Alemania');
 GO
@@ -93,16 +93,16 @@ VALUES
 GO
 
 ------------------------------------------------------------
--- CONSULTA B罶ICA CON INNER JOIN
+-- CONSULTA B脕SICA CON INNER JOIN
 ------------------------------------------------------------
 -- Objetivo:
 -- La consulta une la tabla de hechos "Observaciones" con las tablas de dimensiones "CuerposCelestes" y "Observatorios"
--- para mostrar los detalles de cada observaci髇, incluyendo el nombre del cuerpo celeste,
--- el nombre del observatorio, la fecha de la observaci髇 y el brillo medido.
+-- para mostrar los detalles de cada observaci贸n, incluyendo el nombre del cuerpo celeste,
+-- el nombre del observatorio, la fecha de la observaci贸n y el brillo medido.
 
 
 
-SELECT NombreObservatorio as 'Nombre del Observatorio',Nombre AS 'Cuerpo Celeste' , FechaObservacion as 'Fecha de Observaci髇', Brillo 
+SELECT NombreObservatorio as 'Nombre del Observatorio',Nombre AS 'Cuerpo Celeste' , FechaObservacion as 'Fecha de Observaci贸n', Brillo 
 FROM Observaciones AS O 
 inner join CuerposCelestes on O.ID_Cuerpo= CuerposCelestes.ID_Cuerpo
 inner join Observatorios as OBS on  O.ID_Observatorio= OBS.ID_Observatorio
@@ -128,26 +128,26 @@ order by [Promedio de brillo]
 -- PROCEDIMIENTOS ALMACENADOS 
 ------------------------------------------------------------
 -- Objetivo:
--- Mostrar todas las observaciones asociadas a un cuerpo celeste espec韋ico,
--- recibiendo como par醡etro el ID del cuerpo.
+-- Mostrar todas las observaciones asociadas a un cuerpo celeste espec铆fico,
+-- recibiendo como par谩metro el ID del cuerpo.
 
 -- ejemplo de uso 
 
 
 -- Segundo ejercicio 
 -- Objetivo:
--- Insertar una nueva observaci髇 en la tabla Observaciones,
--- recibiendo los datos necesarios como par醡etros.
+-- Insertar una nueva observaci贸n en la tabla Observaciones,
+-- recibiendo los datos necesarios como par谩metros.
 
 -- Probar 
 
 -- 
--- Mostrar la observaci髇 reci閚 agregada mediante un selct
+-- Mostrar la observaci贸n reci茅n agregada mediante un selct
 
 
 
 
---CREACI覰 DEL SP
+--CREACI脫N DEL SP
 GO
 
 CREATE PROCEDURE sp_ObservacionesPorCuerpo 
@@ -180,7 +180,7 @@ EXEC sp_ObservacionesPorCuerpo 1
 
 GO
 
-CREATE PROCEDURE sp_InsertarObservaci髇
+CREATE PROCEDURE sp_InsertarObservaci贸n
 
     @ID_Cuerpo INT, @ID_Observatorio INT, @FechaObservacion DATETIME, @Brillo FLOAT
 
@@ -199,7 +199,7 @@ GO
 
 --- EJEMPLO DE USO
 
-EXEC sp_InsertarObservaci髇 1, 2, '2024-01-15', 1050
+EXEC sp_InsertarObservaci贸n 1, 2, '2024-01-15', 1050
 
 SELECT * FROM Observaciones WHERE FechaObservacion = '2024-01-15'
 

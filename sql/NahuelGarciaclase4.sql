@@ -1,44 +1,44 @@
 -----------------------------------------------------------------------------------------
--- 1) EXPLICACI”N TE”RICA DE LA UNIDAD 4
+-- 1) EXPLICACI√ìN TE√ìRICA DE LA UNIDAD 4
 --
 -- En esta unidad se abordan varios aspectos fundamentales de la estructura interna de 
--- las bases de datos, centr·ndonos en:
---   ï Log de transacciones: 
+-- las bases de datos, centr√°ndonos en:
+--   ‚Ä¢ Log de transacciones: 
 --       Archivo donde se registran todas las operaciones que se ejecutan (INSERT, UPDATE, 
 --       DELETE, etc.). Permite recuperar la base a un estado consistente en caso de fallos y 
---       tambiÈn revertir (ROLLBACK) o confirmar (COMMIT) cambios dentro de transacciones.
+--       tambi√©n revertir (ROLLBACK) o confirmar (COMMIT) cambios dentro de transacciones.
 --
---   ï Dispositivos:
---       Se refiere principalmente a los archivos fÌsicos donde se almacena la base de datos:
---         - Archivos de datos (extensiÛn .mdf y .ndf), divididos en archivos primarios (PRIMARY) 
+--   ‚Ä¢ Dispositivos:
+--       Se refiere principalmente a los archivos f√≠sicos donde se almacena la base de datos:
+--         - Archivos de datos (extensi√≥n .mdf y .ndf), divididos en archivos primarios (PRIMARY) 
 --           y secundarios (SECONDARY).
---         - Archivos de log (extensiÛn .ldf), que guardan las transacciones para recuperaciÛn.
+--         - Archivos de log (extensi√≥n .ldf), que guardan las transacciones para recuperaci√≥n.
 --
---   ï Problemas de crecimiento:
+--   ‚Ä¢ Problemas de crecimiento:
 --       Ocurren cuando la base de datos excede el espacio asignado o crece sin control, 
---       causando errores o bajo rendimiento. Se pueden configurar lÌmites y FILEGROWTH 
---       (crecimiento autom·tico) en MB o porcentajes. Una mala configuraciÛn de crecimiento 
+--       causando errores o bajo rendimiento. Se pueden configurar l√≠mites y FILEGROWTH 
+--       (crecimiento autom√°tico) en MB o porcentajes. Una mala configuraci√≥n de crecimiento 
 --       puede provocar fragmentaciones o pausas largas.
 --
---   ï P·ginas: 
---       Unidad mÌnima de almacenamiento en SQL Server (8 KB cada una). Los registros residen 
---       fÌsicamente en estas p·ginas. Si muchos usuarios actualizan la misma p·gina (hotspot), 
+--   ‚Ä¢ P√°ginas: 
+--       Unidad m√≠nima de almacenamiento en SQL Server (8 KB cada una). Los registros residen 
+--       f√≠sicamente en estas p√°ginas. Si muchos usuarios actualizan la misma p√°gina (hotspot), 
 --       se generan bloqueos (locks) y potenciales problemas de rendimiento.
 --
---   ï Mantenimiento de las bases de datos:
---       Conjunto de tareas periÛdicas, como backups (para recuperar datos en caso de fallos), 
---       shrink (para liberar espacio sobrante, aunque no siempre es recomendado en producciÛn) 
---       y regeneraciÛn/reorganizaciÛn de Ìndices (para mejorar tiempos de consulta).
+--   ‚Ä¢ Mantenimiento de las bases de datos:
+--       Conjunto de tareas peri√≥dicas, como backups (para recuperar datos en caso de fallos), 
+--       shrink (para liberar espacio sobrante, aunque no siempre es recomendado en producci√≥n) 
+--       y regeneraci√≥n/reorganizaci√≥n de √≠ndices (para mejorar tiempos de consulta).
 --
--- A continuaciÛn, se presentan ejemplos de todos estos conceptos en una base de datos sencilla:
+-- A continuaci√≥n, se presentan ejemplos de todos estos conceptos en una base de datos sencilla:
 -----------------------------------------------------------------------------------------
 
 -----------------------------------------------------------------------------------------
--- EJERCICIO: CreaciÛn de la base "Biblioteca" y demostraciÛn de:
+-- EJERCICIO: Creaci√≥n de la base "Biblioteca" y demostraci√≥n de:
 --   1) Log de transacciones (2 ejemplos)
 --   2) Dispositivos (2 ejemplos)
 --   3) Problemas de crecimiento (2 ejemplos)
---   4) P·ginas (se comentar· su impacto en 2 ejemplos)
+--   4) P√°ginas (se comentar√° su impacto en 2 ejemplos)
 --   5) Mantenimiento de la base (2 ejemplos)
 -----------------------------------------------------------------------------------------
 
@@ -52,10 +52,10 @@ END;
 GO
 
 -----------------------------------------------------------------------------------------
--- 2) DISPOSITIVOS (EJEMPLO 1): CreaciÛn de una BD especificando archivo primario y log
+-- 2) DISPOSITIVOS (EJEMPLO 1): Creaci√≥n de una BD especificando archivo primario y log
 -----------------------------------------------------------------------------------------
 -- Nota: Ajusta la ruta de 'FILENAME' a una carpeta donde tengas permisos de lectura/escritura
---       o, si prefieres, crea la base sin especificar rutas (Ejemplo 2 m·s adelante).
+--       o, si prefieres, crea la base sin especificar rutas (Ejemplo 2 m√°s adelante).
 
 CREATE DATABASE Biblioteca
 ON PRIMARY
@@ -83,7 +83,7 @@ GO
 -----------------------------------------------------------------------------------------
 -- 2) DISPOSITIVOS (EJEMPLO 2): Alterar la base para agregar un archivo de datos secundario
 -----------------------------------------------------------------------------------------
--- Si deseamos agregar m·s dispositivos (archivos secundarios), podemos usar ALTER DATABASE.
+-- Si deseamos agregar m√°s dispositivos (archivos secundarios), podemos usar ALTER DATABASE.
 -- Esto ayuda a distribuir los datos en distintos discos o aumentar espacio.
 
 ALTER DATABASE Biblioteca
@@ -98,7 +98,7 @@ ADD FILE
 GO
 
 -----------------------------------------------------------------------------------------
--- CREACI”N DE UNA TABLA SENCILLA: "Libros"
+-- CREACI√ìN DE UNA TABLA SENCILLA: "Libros"
 -----------------------------------------------------------------------------------------
 CREATE TABLE Libros (
     LibroID INT IDENTITY(1,1) PRIMARY KEY,-- valor autoincremental (1,1)
@@ -110,7 +110,7 @@ GO
 -----------------------------------------------------------------------------------------
 -- 1) LOG DE TRANSACCIONES (EJEMPLO 1): Insert y ROLLBACK
 -----------------------------------------------------------------------------------------
--- Mostramos cÛmo usar BEGIN TRAN, ROLLBACK para deshacer cambios.
+-- Mostramos c√≥mo usar BEGIN TRAN, ROLLBACK para deshacer cambios.
 
 BEGIN TRAN InsercionConRollback;
     INSERT INTO Libros (Titulo, Autor) VALUES ('1984', 'George Orwell');
@@ -119,11 +119,11 @@ BEGIN TRAN InsercionConRollback;
     -- Verificamos los registros en la tabla
     SELECT 'Antes de ROLLBACK' AS Etapa, * FROM Libros;
     
-    -- Usamos ROLLBACK, asÌ los cambios se deshacen
+    -- Usamos ROLLBACK, as√≠ los cambios se deshacen
 ROLLBACK TRAN InsercionConRollback;
 
 -- Verificamos que, efectivamente, no hay registros permanentes
-SELECT 'DespuÈs de ROLLBACK' AS Etapa, * FROM Libros;
+SELECT 'Despu√©s de ROLLBACK' AS Etapa, * FROM Libros;
 
 -----------------------------------------------------------------------------------------
 -- 1) LOG DE TRANSACCIONES (EJEMPLO 2): Insert y COMMIT
@@ -131,24 +131,24 @@ SELECT 'DespuÈs de ROLLBACK' AS Etapa, * FROM Libros;
 -- Ahora confirmamos los cambios con COMMIT.
 
 BEGIN TRAN InsercionConCommit;
-    INSERT INTO Libros (Titulo, Autor) VALUES ('Cien AÒos de Soledad', 'Gabriel GarcÌa M·rquez');
+    INSERT INTO Libros (Titulo, Autor) VALUES ('Cien A√±os de Soledad', 'Gabriel Garc√≠a M√°rquez');
     INSERT INTO Libros (Titulo, Autor) VALUES ('La Metamorfosis', 'Franz Kafka');
 
     SELECT 'Antes de COMMIT' AS Etapa, * FROM Libros;
 COMMIT TRAN InsercionConCommit;
 
--- Los datos ahora sÌ quedan guardados de forma permanente
-SELECT 'DespuÈs de COMMIT' AS Etapa, * FROM Libros;
+-- Los datos ahora s√≠ quedan guardados de forma permanente
+SELECT 'Despu√©s de COMMIT' AS Etapa, * FROM Libros;
 --ejemplo similar
 BEGIN TRAN insercionconcommit2;
-INSERT INTO Libros (Titulo,Autor) values ('El Principito', 'Antoine de Saint-ExupÈry');
+INSERT INTO Libros (Titulo,Autor) values ('El Principito', 'Antoine de Saint-Exup√©ry');
 
 SELECT 'antes de COMMIT' AS Etapa, * FROM Libros;
 COMMIT TRAN insercionconcommit2;
-SELECT 'DespuÈs de COMMIT' AS Etapa, * FROM Libros;
+SELECT 'Despu√©s de COMMIT' AS Etapa, * FROM Libros;
 
 -----------------------------------------------------------------------------------------
--- 3) PROBLEMAS DE CRECIMIENTO (EJEMPLO 1): InserciÛn masiva simulando llenado de la base
+-- 3) PROBLEMAS DE CRECIMIENTO (EJEMPLO 1): Inserci√≥n masiva simulando llenado de la base
 -----------------------------------------------------------------------------------------
 -- Un loop que inserta muchos registros y puede disparar crecimiento del archivo.
 
@@ -159,7 +159,7 @@ BEGIN TRAN Masiva;
         INSERT INTO Libros (Titulo, Autor)
         VALUES 
         (
-            'Libro ' + CAST(@i AS VARCHAR(10)), -- combina y convierte caracteres y n˙meros 
+            'Libro ' + CAST(@i AS VARCHAR(10)), -- combina y convierte caracteres y n√∫meros 
             'Autor ' + CAST(@i AS VARCHAR(10))
         );
         SET @i = @i + 1;
@@ -174,8 +174,8 @@ select * from libros
 -----------------------------------------------------------------------------------------
 -- 3) PROBLEMAS DE CRECIMIENTO (EJEMPLO 2): Configurar y mostrar propiedades de crecimiento
 -----------------------------------------------------------------------------------------
--- Podemos usar sys.database_files para ver cÛmo est·n configurados los archivos (size, maxsize, growth).
--- Con esto comprendemos mejor dÛnde podrÌan ocurrir problemas de espacio si no se configura bien.
+-- Podemos usar sys.database_files para ver c√≥mo est√°n configurados los archivos (size, maxsize, growth).
+-- Con esto comprendemos mejor d√≥nde podr√≠an ocurrir problemas de espacio si no se configura bien.
 
 SELECT 
     name AS NombreArchivo,
@@ -186,23 +186,23 @@ SELECT
     FILE_ID 
 FROM sys.database_files;
 
--- Nota: size, max_size, growth se miden en p·ginas de 8KB. 
+-- Nota: size, max_size, growth se miden en p√°ginas de 8KB. 
 --       Por ejemplo, size=640 equivale a 640*8KB = 5120KB (5MB aprox).
 
 -----------------------------------------------------------------------------------------
--- 4) P¡GINAS (EJEMPLO 1): Comentario sobre bloqueos (hotspot) si muchos INSERT apuntan a la misma p·gina (INVESTGAR Y POTENCIAR ESTE PUNTO)
+-- 4) P√ÅGINAS (EJEMPLO 1): Comentario sobre bloqueos (hotspot) si muchos INSERT apuntan a la misma p√°gina (INVESTGAR Y POTENCIAR ESTE PUNTO)
 -----------------------------------------------------------------------------------------
--- Realmente ver las p·ginas requiere comandos avanzados (DBCC PAGE), pero aquÌ ejemplificamos 
--- cÛmo m˙ltiples INSERT secuenciales podrÌan concentrarse en p·ginas contiguas, causando bloqueos.
--- Se logra a travÈs de un INSERT en serie (similar al loop previo). Mencionamos este ejemplo 
--- como parte de la teorÌa. /TAREA/
+-- Realmente ver las p√°ginas requiere comandos avanzados (DBCC PAGE), pero aqu√≠ ejemplificamos 
+-- c√≥mo m√∫ltiples INSERT secuenciales podr√≠an concentrarse en p√°ginas contiguas, causando bloqueos.
+-- Se logra a trav√©s de un INSERT en serie (similar al loop previo). Mencionamos este ejemplo 
+-- como parte de la teor√≠a. /TAREA/
 
 /*Cuando muchas conexiones insertan datos al mismo tiempo, todas intentan escribir en la misma parte final
-de la tabla. Esto genera un ìhotspotî, porque varias sesiones compiten por usar las mismas p·ginas. 
+de la tabla. Esto genera un ‚Äúhotspot‚Äù, porque varias sesiones compiten por usar las mismas p√°ginas. 
 Como resultado, SQL Server hace que unas conexiones esperen a otras, produciendo demoras y bloqueos.
-Este ejemplo muestra cÛmo muchos INSERT pueden concentrarse en las mismas p·ginas aunque no las veamos directamente.*/
+Este ejemplo muestra c√≥mo muchos INSERT pueden concentrarse en las mismas p√°ginas aunque no las veamos directamente.*/
 
--- EJEMPLO: Insertar un lote m·s grande.
+-- EJEMPLO: Insertar un lote m√°s grande.
 BEGIN TRAN HotspotExample;
     DECLARE @j INT = 1;
     WHILE (@j <= 500)
@@ -221,23 +221,23 @@ BEGIN TRAN HotspotExample;
         INSERT INTO Libros (Titulo, Autor)
         VALUES ('Hotspot ' + CAST(@j AS VARCHAR(10)), 'Autor Hotspot');
 
-        WAITFOR DELAY '00:00:00.050'; -- Hace m·s visible la contenciÛn
+        WAITFOR DELAY '00:00:00.050'; -- Hace m√°s visible la contenci√≥n
         SET @j = @j + 1;
     END;
 COMMIT TRAN HotspotExample;
---Esto muestra p·ginas bloqueada
+--Esto muestra p√°ginas bloqueada
 SELECT * 
 FROM sys.dm_tran_locks
 WHERE resource_type = 'PAGE';
 
 
--- Comentario: Si 100 conexiones hicieran esto simult·neamente, se producirÌan contenciones 
--- en las mismas p·ginas. AsÌ se ejemplifica la problem·tica de ìp·ginasî.
+-- Comentario: Si 100 conexiones hicieran esto simult√°neamente, se producir√≠an contenciones 
+-- en las mismas p√°ginas. As√≠ se ejemplifica la problem√°tica de ‚Äúp√°ginas‚Äù.
 -----------------------------------------------------------------------------------------
--- 4) P¡GINAS (EJEMPLO 2): Fill Factor e Ìndices
+-- 4) P√ÅGINAS (EJEMPLO 2): Fill Factor e √≠ndices
 -----------------------------------------------------------------------------------------
--- Fill Factor define cu·nto espacio libre dejar en cada p·gina para futuras inserciones, 
--- reduciendo hotspots. Un Ìndice con fill factor 80% deja un 20% de espacio libre por p·gina.
+-- Fill Factor define cu√°nto espacio libre dejar en cada p√°gina para futuras inserciones, 
+-- reduciendo hotspots. Un √≠ndice con fill factor 80% deja un 20% de espacio libre por p√°gina.
 
 CREATE INDEX IX_Libros_Titulo
 ON Libros (Titulo)
@@ -247,18 +247,18 @@ CREATE INDEX IX_Libros_autor
 ON Libros (autor)
 WITH (FILLFACTOR = 90);
 
--- Verificamos que se creÛ el Ìndice (no mostrar· fill factor f·cilmente, pero ya se aplicÛ).
+-- Verificamos que se cre√≥ el √≠ndice (no mostrar√° fill factor f√°cilmente, pero ya se aplic√≥).
 EXEC sp_helpindex 'Libros';
 
 
--- Este fill factor previene, en parte, la fragmentaciÛn r·pida si hay muchas inserciones.
+-- Este fill factor previene, en parte, la fragmentaci√≥n r√°pida si hay muchas inserciones.
 
 -----------------------------------------------------------------------------------------
 -- 5) MANTENIMIENTO DE LAS BASES (EJEMPLO 1): Backup completo
 -----------------------------------------------------------------------------------------
 -- Realizamos un backup de la base de datos en una ruta local. 
 -- Ajusta la ruta donde tengas permisos. 
--- WITH INIT para sobrescribir si existÌa un archivo previo.
+-- WITH INIT para sobrescribir si exist√≠a un archivo previo.
 IF @@TRANCOUNT > 0
     ROLLBACK;
 BACKUP DATABASE Biblioteca
@@ -268,22 +268,22 @@ GO
 
 
 -----------------------------------------------------------------------------------------
--- 5) MANTENIMIENTO DE LAS BASES (EJEMPLO 2): Shrink y reorganizaciÛn de Ìndices
+-- 5) MANTENIMIENTO DE LAS BASES (EJEMPLO 2): Shrink y reorganizaci√≥n de √≠ndices
 -----------------------------------------------------------------------------------------
 --  A veces, tras un borrado masivo, la base queda con espacio libre. "Shrink" puede recuperar 
---  espacio, aunque puede fragmentar Ìndices. DespuÈs, reorganizamos Ìndices.
+--  espacio, aunque puede fragmentar √≠ndices. Despu√©s, reorganizamos √≠ndices.
 
 DBCC SHRINKDATABASE (Biblioteca);
 GO
--- El mensaje indica que SQL Server no encontrÛ espacio libre para reducir.
+-- El mensaje indica que SQL Server no encontr√≥ espacio libre para reducir.
 /*NO es recomendable hacerlo frecuentemente, porque puede fragmentar los datos y afectar el rendimiento.
-Solo ˙salo si has eliminado muchos datos y necesitas recuperar espacio en disco.*/
+Solo √∫salo si has eliminado muchos datos y necesitas recuperar espacio en disco.*/
 
 ALTER INDEX ALL ON Libros
 REORGANIZE;
 GO
 
--- TambiÈn podemos actualizar estadÌsticas para mejorar planes de ejecuciÛn
+-- Tambi√©n podemos actualizar estad√≠sticas para mejorar planes de ejecuci√≥n
 UPDATE STATISTICS Libros;
 GO
 
@@ -297,9 +297,9 @@ GO
 
 -----------------------------------------------------------------------------------------
 -- RESUMEN:
--- - Se demostrÛ la creaciÛn de la BD especificando dispositivos (archivos),
+-- - Se demostr√≥ la creaci√≥n de la BD especificando dispositivos (archivos),
 -- - Se probaron transacciones (COMMIT y ROLLBACK),
 -- - Se ilustraron problemas de crecimiento con inserciones masivas,
--- - Se explicÛ el rol de las p·ginas (hotspots y fill factor),
--- - Se realizaron tareas de mantenimiento (backup, shrink, reorganizar Ìndices).
+-- - Se explic√≥ el rol de las p√°ginas (hotspots y fill factor),
+-- - Se realizaron tareas de mantenimiento (backup, shrink, reorganizar √≠ndices).
 -----------------------------------------------------------------------------------------
